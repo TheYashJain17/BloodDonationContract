@@ -4,6 +4,22 @@ pragma solidity ^0.8.9;
 
 contract bloodDonation{
 
+        enum patientType{
+
+            donor,
+            receiver
+
+        }
+
+        struct bloodTransaction{
+
+            patientType Type;
+            uint Date;
+            address From;
+            address To;
+
+        }
+
     struct Patient{
 
         string Name;
@@ -12,6 +28,7 @@ contract bloodDonation{
         uint Contact;
         string HomeAddress;
         uint Aadhar;
+        bloodTransaction[] bT;
 
 }
 
@@ -40,6 +57,14 @@ function registerPatient(string memory _name , uint _age , string memory _BloodG
     patientDetais[index].Aadhar = _Aadhar;
   
     patientDetailsIndex[_Aadhar] = index;
+
+}
+
+function Bloodtransaction(patientType _type , address _from , address _to , uint _Aadhar) external {
+
+    uint index = patientDetailsIndex[_Aadhar];
+
+    patientDetails[index].bT.push(bloodTransaction(_type , block.timestamp , _from , _to));
 
 
 }
