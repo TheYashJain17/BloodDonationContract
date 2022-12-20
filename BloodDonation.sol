@@ -37,13 +37,30 @@ contract bloodDonation{
 
 }
 
+address public owner;
+
 Patient[] patientDetails;   //Making An Array With Patient Struct To Store All Details Inside An Array. 
 
 mapping(uint => uint) patientDetailsIndex;  //Declaring Mapping To Access Patient Location With The Help Of His/Her Aadhar.
 
+constructor(){
+
+    owner = msg.sender;
+
+}
+
+modifier onlyOwner(){
+
+    require(msg.sender == owner,"Only Owner Can Access This Function");
+
+    _;
+
+}
+
+
 //Making A Function Through Which Hospital Can Get All Records At One Go.
 
-function getAllRecords() view external returns(Patient[] memory){
+function getAllRecords() view external onlyOwner returns(Patient[] memory){
     return patientDetails;
 }
 
@@ -80,7 +97,7 @@ function registerPatient(string memory _Name , uint _Age , string memory _BloodG
 
 //Making A Function Through Which Hospital Can Add The Details Of A BloodTrasaction Into The Particular Patient Details. 
 
-function Bloodtransaction(patientType _type , address _from , address _to , uint _Aadhar) external {
+function Bloodtransaction(patientType _type , address _from , address _to , uint _Aadhar) external onlyOwner{
 
     uint index = patientDetailsIndex[_Aadhar];  //Accessing The Patient Location With The Help Of His/Her Aadhar.
 
