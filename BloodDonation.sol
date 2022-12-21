@@ -3,6 +3,15 @@ pragma solidity ^0.8.9;
 
 contract bloodDonation{
 
+        struct hospitalDetails{
+
+            string _Name;
+            uint _Contact;
+            string _Location;
+            uint _Fees;
+             
+        }
+
 //Declaring An Enum With Name patientType To Know Whether The Patient Is Donor Or Receiver.
 
         enum patientType{
@@ -11,6 +20,7 @@ contract bloodDonation{
             receiver
 
         }
+
 
 //Declaring Struct With Name bloodTransaction To Record The Details Of bloodTransaction.
 
@@ -35,16 +45,20 @@ contract bloodDonation{
         uint Aadhar;
         bloodTransaction[] bT;  //Making An Array With Name bT Through bloodtransaction Struct To Store The Details In Pateint Struct Which We Stored Inside The bloodTransaction Struct. 
 
-}
+        }
 
 address public owner;
+
+
+
+hospitalDetails[] hospitalInfo;
 
 Patient[] patientDetails;   //Making An Array With Patient Struct To Store All Details Inside An Array. 
 
 mapping(uint => uint) patientDetailsIndex;  //Declaring Mapping To Access Patient Location With The Help Of His/Her Aadhar.
 
 constructor(){
-
+    
     owner = msg.sender;
 
 }
@@ -57,6 +71,23 @@ modifier onlyOwner(){
 
 }
 
+
+function setHospitalInfo(string memory Name_ , uint Contact_ , string memory Location_ , uint Fees_) external onlyOwner{
+
+    hospitalDetails memory _hospital;
+
+    _hospital._Name = Name_;
+    _hospital._Contact = Contact_;
+    _hospital._Location = Location_;
+    _hospital._Fees = Fees_;
+
+    hospitalInfo.push(_hospital);
+
+}
+
+function getHospitalInfo() view external returns(hospitalDetails[] memory){
+    return hospitalInfo;
+}
 
 //Making A Function Through Which Hospital Can Get All Records At One Go.
 
@@ -93,6 +124,7 @@ function registerPatient(string memory _Name , uint _Age , string memory _BloodG
   
     patientDetailsIndex[_Aadhar] = index;   //Storing The Above Data(Which We Stored In Index Variable) In Refrence With The Aadhar With The Help Of Mapping.This Means This Particular Aadhar Contains This Particular Person/Patient's Information
 
+    
 }
 
 //Making A Function Through Which Hospital Can Add The Details Of A BloodTrasaction Into The Particular Patient Details. 
@@ -108,6 +140,7 @@ function Bloodtransaction(patientType _type , address _from , address _to , uint
 }
 
 }
+
 
 
 
