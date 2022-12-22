@@ -3,6 +3,8 @@ pragma solidity ^0.8.9;
 
 contract bloodDonation{
 
+//Declaring Struct To Store Hospital Details.
+
         struct hospitalDetails{
 
             string _Name;
@@ -49,9 +51,9 @@ contract bloodDonation{
 
 address public owner;
 
+event successFull(address _from , string _msg); //Declared An Event.
 
-
-hospitalDetails[] hospitalInfo;
+hospitalDetails[] hospitalInfo; //Making An Array With hospitalDetails Struct To Store All Details Inside An Array. 
 
 Patient[] patientDetails;   //Making An Array With Patient Struct To Store All Details Inside An Array. 
 
@@ -71,6 +73,7 @@ modifier onlyOwner(){
 
 }
 
+//Made A Function To Set Hospital Info.
 
 function setHospitalInfo(string memory Name_ , uint Contact_ , string memory Location_ , uint Fees_) external onlyOwner{
 
@@ -84,6 +87,8 @@ function setHospitalInfo(string memory Name_ , uint Contact_ , string memory Loc
     hospitalInfo.push(_hospital);
 
 }
+
+//Made A Function To Get Hospital Info.
 
 function getHospitalInfo() view external returns(hospitalDetails[] memory){
     return hospitalInfo;
@@ -124,7 +129,8 @@ function registerPatient(string memory _Name , uint _Age , string memory _BloodG
   
     patientDetailsIndex[_Aadhar] = index;   //Storing The Above Data(Which We Stored In Index Variable) In Refrence With The Aadhar With The Help Of Mapping.This Means This Particular Aadhar Contains This Particular Person/Patient's Information
 
-    
+    emit successFull(msg.sender , "Patient Has Been Registered Successfully");  //Initialised Event.
+
 }
 
 //Making A Function Through Which Hospital Can Add The Details Of A BloodTrasaction Into The Particular Patient Details. 
@@ -136,6 +142,8 @@ function Bloodtransaction(patientType _type , address _from , address _to , uint
 //Entering The Data Of bloodTransaction Struct Into Particular Patient's Struct.
 
     patientDetails[index].bT.push(bloodTransaction(_type , block.timestamp , _from , _to));
+
+   
 
 }
 
